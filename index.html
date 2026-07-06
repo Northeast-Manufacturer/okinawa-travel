@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>沖繩4+1日行程地圖（Google版）</title>
 <style>
 :root{--bg:#101418;--panel:#1a2027;--card:#232b34;--text:#e8eaed;--muted:#9aa3ad;--line:#2e3845;}
@@ -44,7 +47,8 @@ footer{padding:8px 14px;font-size:11.5px;color:var(--muted);background:var(--bg)
 </main>
 <footer>路線由Google Directions計算之實際行車路徑；點擊行程卡片可定位該停點。v4定版 8/24–8/28。</footer>
 <script>
-const API_KEY="AIzaSyBOzFinn5EiUWG-JnYwyOpgEKMB0FmC2iY"; // ←新金鑰，記得到Cloud Console設HTTP referrer限制
+const API_KEY="AIzaSyBOzFinn5EiUWG-JnYwyOpgEKMB0FmC2iY"; // 新金鑰，已設HTTP referrer限制
+const BUILD_VERSION="20260706-2"; // 每次重新上傳前手動改這個字串，強制破CDN/瀏覽器快取
 const DAYS=[
 {label:"Day 1",date:"8/24（一）",title:"落地日:機場→北谷",route:"那霸機場 → 安良波 → 北谷(宿)",color:"#7F77DD",stops:[
 {t:"14:40",n:"那霸機場 落地",d:"領車含接駁手續抓2小時,17:00前上路",lat:26.20013,lng:127.64665},
@@ -136,7 +140,7 @@ function drawRoute(d,i){
   });
 }
 const sc=document.createElement('script');
-sc.src='https://maps.googleapis.com/maps/api/js?key='+API_KEY+'&language=zh-TW&region=JP&callback=init';
+sc.src='https://maps.googleapis.com/maps/api/js?key='+API_KEY+'&language=zh-TW&region=JP&callback=init&v='+BUILD_VERSION;
 sc.async=true;document.head.appendChild(sc);
 </script>
 </body>
