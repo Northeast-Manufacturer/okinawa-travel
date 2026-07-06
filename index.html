@@ -41,6 +41,7 @@ footer{padding:8px 14px;font-size:11.5px;color:var(--muted);background:var(--bg)
     <div class="eyebrow" id="day-eyebrow"></div>
     <h1 id="day-title"></h1>
     <div class="route-sub" id="day-route"></div>
+    <div id="day-legs" style="font-size:12px;color:#6b9a76;margin-bottom:10px;"></div>
     <a class="gbtn" id="nav-link" target="_blank" rel="noopener">➤ 開啟Google Maps導航</a>
     <div id="stops"></div>
   </aside>
@@ -48,7 +49,7 @@ footer{padding:8px 14px;font-size:11.5px;color:var(--muted);background:var(--bg)
 <footer>路線由Google Directions計算之實際行車路徑；點擊行程卡片可定位該停點。v4定版 8/24–8/28。</footer>
 <script>
 const API_KEY="AIzaSyBOzFinn5EiUWG-JnYwyOpgEKMB0FmC2iY"; // 新金鑰，已設HTTP referrer限制
-const BUILD_VERSION="20260706-4"; // 每次重新上傳前手動改這個字串，強制破CDN/瀏覽器快取
+const BUILD_VERSION="20260706-5"; // 每次重新上傳前手動改這個字串，強制破CDN/瀏覽器快取
 const DAYS=[
 {label:"Day 1",date:"8/24（一）",title:"落地日:機場→北谷",route:"那霸機場 → 安良波 → 北谷(宿)",color:"#7F77DD",stops:[
 {t:"14:40",n:"那霸機場 落地",d:"領車含接駁手續抓2小時,17:00前上路",lat:26.20013,lng:127.64665},
@@ -76,7 +77,7 @@ const DAYS=[
 {t:"13:45",n:"那霸機場",d:"JX871 15:50起飛。國際線櫃檯排隊抓30分,保險12:45出發",lat:26.20013,lng:127.64665}]}
 ];
 const NIGHT=[{elementType:"geometry",stylers:[{color:"#242f3e"}]},{elementType:"labels.text.stroke",stylers:[{color:"#242f3e"}]},{elementType:"labels.text.fill",stylers:[{color:"#746855"}]},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#263c3f"}]},{featureType:"poi.park",elementType:"labels.text.fill",stylers:[{color:"#6b9a76"}]},{featureType:"road",elementType:"geometry",stylers:[{color:"#38414e"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{color:"#212a37"}]},{featureType:"road",elementType:"labels.text.fill",stylers:[{color:"#9ca5b3"}]},{featureType:"road.highway",elementType:"geometry",stylers:[{color:"#746855"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#1f2835"}]},{featureType:"road.highway",elementType:"labels.text.fill",stylers:[{color:"#f3d19c"}]},{featureType:"transit",elementType:"geometry",stylers:[{color:"#2f3948"}]},{featureType:"transit.station",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#17263c"}]},{featureType:"water",elementType:"labels.text.fill",stylers:[{color:"#515c6d"}]}];
-let map,dirService,current=0,overlays=[],routeCache={},info;
+let map,dirService,current=0,overlays=[],routeCache={},legsCache={},info;
 function init(){
   map=new google.maps.Map(document.getElementById('map'),{center:{lat:26.42,lng:127.82},zoom:10,styles:NIGHT,mapTypeControl:false,streetViewControl:false,fullscreenControl:true});
   dirService=new google.maps.DirectionsService();
@@ -97,6 +98,7 @@ function show(i){
   document.getElementById('day-eyebrow').textContent='DAY '+(i+1)+'・'+d.date;
   document.getElementById('day-title').textContent=d.title;
   document.getElementById('day-route').textContent=d.route;
+  document.getElementById('day-legs').textContent='正在向Google Directions查詢實際車程...';
   document.getElementById('nav-link').href=navUrl(d);
   const box=document.getElementById('stops');box.innerHTML='';
   clearOverlays();
@@ -121,7 +123,25 @@ function drawRoute(d,i){
     const line=new google.maps.Polyline({path,strokeColor:d.color,strokeOpacity:.95,strokeWeight:4,map});
     overlays.push(halo,line);
   };
-  if(routeCache[i]){renderPath(routeCache[i]);return;}
+  const renderLegs=(legs)=>{
+    if(current!==i)return;
+    let totalSec=0,totalM=0;
+    legs.forEach(l=>{totalSec+=l.duration.value;totalM+=l.distance.value;});
+    const totalMin=Math.round(totalSec/60);
+    const totalKm=(totalM/1000).toFixed(1);
+    const legEl=document.getElementById('day-legs');
+    if(legEl)legEl.textContent='Google Directions實測:本日總車程約'+totalMin+'分・'+totalKm+'km（'+legs.length+'段,含即時路況估算,非固定值）';
+    const cards=document.querySelectorAll('#stops .stop');
+    legs.forEach((l,k)=>{
+      if(cards[k+1]){
+        const tag=document.createElement('div');
+        tag.style.cssText='font-size:11.5px;color:#6b9a76;padding:2px 14px 6px;margin-top:-6px;';
+        tag.textContent='↓ 車程 '+l.duration.text+'・'+l.distance.text+'（Directions實測）';
+        cards[k+1].parentNode.insertBefore(tag,cards[k+1]);
+      }
+    });
+  };
+  if(routeCache[i]){renderPath(routeCache[i]);if(legsCache[i])renderLegs(legsCache[i]);return;}
   const pts=d.stops.map(s=>({lat:s.lat,lng:s.lng}));
   dirService.route({
     origin:pts[0],destination:pts[pts.length-1],
@@ -130,9 +150,13 @@ function drawRoute(d,i){
   },(res,status)=>{
     if(status==='OK'&&res.routes[0]){
       routeCache[i]=res.routes[0].overview_path;
+      legsCache[i]=res.routes[0].legs;
       renderPath(routeCache[i]);
+      renderLegs(legsCache[i]);
     }else{
       console.warn('Directions失敗:',status,'→ 退回示意直線。若為REQUEST_DENIED,到Cloud Console啟用Directions API');
+      const legEl=document.getElementById('day-legs');
+      if(legEl)legEl.textContent='Directions API呼叫失敗('+status+'),以下車程數字無法顯示';
       if(current!==i)return;
       const line=new google.maps.Polyline({path:pts,strokeColor:d.color,strokeOpacity:.7,strokeWeight:3,icons:[{icon:{path:'M 0,-1 0,1',strokeOpacity:1,scale:3},offset:'0',repeat:'14px'}],map});
       line.setOptions({strokeOpacity:0});
