@@ -49,31 +49,31 @@ footer{padding:8px 14px;font-size:11.5px;color:var(--muted);background:var(--bg)
 <footer>路線由Google Directions計算之實際行車路徑；點擊行程卡片可定位該停點。v4定版 8/24–8/28。</footer>
 <script>
 const API_KEY="AIzaSyBOzFinn5EiUWG-JnYwyOpgEKMB0FmC2iY"; // 新金鑰，已設HTTP referrer限制
-const BUILD_VERSION="20260706-7"; // 每次重新上傳前手動改這個字串，強制破CDN/瀏覽器快取
+const BUILD_VERSION="20260707-1"; // 每次重新上傳前手動改這個字串，強制破CDN/瀏覽器快取
 const DAYS=[
 {label:"Day 1",date:"8/24（一）",title:"落地日:機場→北谷",route:"那霸機場 → 安良波 → 北谷(宿)",color:"#7F77DD",stops:[
 {t:"14:40",n:"那霸機場 落地",d:"領車含接駁手續抓2小時,17:00前上路",lat:26.20013,lng:127.64665},
 {t:"17:45",n:"安良波公園",d:"海盜船遊具放電1小時",lat:26.30417,lng:127.75904},
 {t:"18:20",n:"Sunset Beach 夕陽",d:"日落18:50",lat:26.31350,lng:127.75530},
-{t:"20:00",n:"名護市 晚餐(宿名護)",d:"<span class=warn>從北谷開車約50-60分,晚餐時間比原規劃(19:15)延後約45分</span>。十字路周邊居酒屋(Azito/大衆食堂いろは)。<span class=warn>雨備選項(可信度中等,僅單一來源查證):國際海洋環境情報センター,名護市內免費室內展示,JAMSTEC深海探測主題</span>",lat:26.5903,lng:127.9813}]},
+{t:"20:00",n:"名護市 晚餐(宿名護)",d:"<span class=warn>從北谷開車約50-60分,晚餐時間比原規劃(19:15)延後約45分</span>。十字路周邊居酒屋(Azito/大衆食堂いろは)。<span class=warn>雨備選項(可信度中等,僅單一來源查證):國際海洋環境情報センター,名護市內免費室內展示,JAMSTEC深海探測主題</span><br>住宿:<a href='https://greenrichhotels.jp/nago/' target='_blank' style='color:#8ab4f8'>グリーンリッチホテル沖縄名護</a>(〒905-0013沖縄県名護市城2-13-646)。最上階展望大浴場,1F泳池+按摩浴缸免費。<span class=warn>停車場先着順、有料,滿了會被引導到附近停車場,非保留制</span>",lat:26.5868102,lng:127.9839357}]},
 {label:"Day 2",date:"8/25(二)",title:"本部集中攻略:水族館+獨木舟",route:"名護 → 本部(備瀬) → 名護 → 恩納(宿)",color:"#378ADD",stops:[
 {t:"08:30",n:"美麗海水族館+園內遊具區",d:"開門進場,從名護出發車程約25-30分,可維持早鳥時段。11:00後戶外遊具燙,11:30前撤。許田道之駅買優惠票",lat:26.69434,lng:127.87801},
 {t:"11:45",n:"本部そば街道 午餐",d:"きしもと食堂週三公休,本日8/25無影響,先查公休日",lat:26.66033,lng:127.89589},
 {t:"13:00",n:"備瀬透明獨木舟(クリアカヤック)",d:"新排入。距水族館約2分鐘,場次固定09:00/11:00/13:00/15:00,每場90分含15分行前說明,13:00場結束約14:30。原Kariyushi Water Land 14:00場次已因時段衝突移到Day3早上,不再排這裡。<span class=warn>戶外水上活動,雨天/強風可能直接停辦,官網未載明確切取消政策,出發前電話確認</span>。備瀬フクギ並木入口店面",lat:26.69996,lng:127.87993},
 {t:"15:00",n:"Neo Park",d:"<span class=warn>從備瀬約25-30分,17:30閉園,可玩約2-2.5小時。半雨備:園內有屋頂步道可不淋雨繞行(來源:日文親子遊記網站,非官方單一佐證)</span>。入口先買鳥飼料,紅鶴孔雀放養",lat:26.61066,lng:127.99152},
-{t:"17:45",n:"移動到恩納(宿)",d:"<span class=warn>從NeoPark約30-35分,住萬座周邊(如ANA InterContinental Manza Beach Resort一帶),隔天早上可直接就地銜接Kariyushi Water Land</span>",lat:26.50830,lng:127.85809}]},
+{t:"17:45",n:"移動到恩納(宿)",d:"<span class=warn>從NeoPark約30-35分,隔天早上可直接就地銜接Kariyushi Water Land</span><br>住宿首選:<a href='https://moon-villa.com/' target='_blank' style='color:#8ab4f8'>ペンション ムーンヴィラ</a>(前兼久1006-2)。<span class=warn>官網明載停車場為先着順9台、非保留制,滿了就沒有,不接受預約車位</span>。4人利用時每人¥3,500起,含免費停車。<br>若車位滿:改<a href='https://www.google.com/search?q=%E6%81%A9%E7%B4%8D%E3%83%AA%E3%82%BE%E3%83%BC%E3%83%88%E4%BB%B2%E6%B3%8A' target='_blank' style='color:#8ab4f8'>恩納リゾート仲泊</a>(仲泊1411-56,Google搜尋頁,無官網)。<span class=warn>評分5.0但僅18則評論,樣本數小,參考價值有限</span>",lat:26.4510212,lng:127.8037439}]},
 {label:"Day 3",date:"8/26(三)",title:"恩納出發:西岸中段+兒童王國",route:"恩納 → 萬座 → 沖縄市 → 北谷(宿)",color:"#1D9E75",stops:[
-{t:"09:00",n:"Kariyushi Water Land【早場,時間未驗證】",d:"4歲以上。<span class=warn>非住客資格電話驗證=關鍵路徑,不因換宿地點而消失。早場實際開放時間我沒有查證,原始資料只確認【第二場14:00】存在,09:00是推估值,出發前務必電話確認</span>。就地出發不用長途移動",lat:26.52622,lng:127.93002},
+{t:"09:00",n:"Kariyushi Water Land【早場,時間未驗證】",d:"4歲以上。<span class=warn>非住客資格電話驗證=關鍵路徑,不因換宿地點而消失。早場實際開放時間我沒有查證,原始資料只確認【第二場14:00】存在,09:00是推估值,出發前務必電話確認</span>。<span class=warn>因飯店改訂Pension Moon Villa(較南,前兼久),不再是原本ANA萬座旁的\"就地出發\",車程約25-30分,不算長途但也不是零移動,這點跟前一版不同要注意</span>",lat:26.52622,lng:127.93002},
 {t:"10:45",n:"萬座Ocean Park【第一場】",d:"3歲以上。線上預約場次+查當日潮汐表,退潮時段停開。就地或短程移動",lat:26.50830,lng:127.85810},
 {t:"13:15",n:"おんなの駅 午餐",d:"水果剉冰。在萬座南側,吃完再南下。選配:残波岬公園繞15分。<span class=warn>雨備選項:琉球ガラス匠工房 石川本店,從おんなの駅約5分,3歲以上可參加琉璃體驗,不需預約(來源:旅色tabiiro.jp)</span>",lat:26.43632,lng:127.79471},
 {t:"14:30",n:"沖繩兒童王國(こどもの国)",d:"從おんなの駅約20分。每週二公休,8/26是週三OK。平日9:30-17:30開園",lat:26.32769,lng:127.80304},
-{t:"17:00",n:"北谷(宿)",d:"<span class=warn>從兒童王國約12-15分。晚上雨備:Round 1 Stadium宜野灣,平日10:00-翌6:00,離北谷約8km,這天開始雨備才實際有效</span>。美國村晚餐逛街",lat:26.31588,lng:127.75401}]},
+{t:"17:00",n:"北谷(宿)",d:"<span class=warn>從兒童王國約12-15分。晚上雨備:Round 1 Stadium宜野灣,平日10:00-翌6:00,離北谷約8km,這天開始雨備才實際有效</span>。美國村晚餐逛街<br><b>住宿三選項比較:</b><br>① <a href='https://www.cocomonpa.co.jp/' target='_blank' style='color:#8ab4f8'>Cococious Monpa Hotel(蒙帕)</a> — 美濱25-1,評分4.4(315則)。<span class=warn>官網明載50個停車位、先着順不接受預約,滿了引導至附近停車場</span>。步行到美國村約10-13分<br>② <a href='https://www.google.com/search?q=Mister+Kinjo+Premium+Home+1+Chatan' target='_blank' style='color:#8ab4f8'>Mister Kinjo Premium Home 1</a>(桑江1-13-29,無官網,Google搜尋頁)。評分3.9(218則)。<span class=warn>停車位數量最少且評論明確提到額外收費(¥1000/晚),離美國村較遠,多則負評提到房間清潔度問題</span><br>③ <a href='https://www.google.com/search?q=Luana+Uakoko+Resort+Chatan' target='_blank' style='color:#8ab4f8'>Luana Uakoko Resort</a>(桑江1-6-23,無官網,Google搜尋頁)。評分4.3(263則),<span class=warn>三者中最便宜,但停車位同樣有限且需付費,評論提到房間隔音差、換房頻繁等問題</span>",lat:26.31588,lng:127.75401}]},
 {label:"Day 4",date:"8/27(四)",title:"南下收尾:還車日",route:"北谷 → 浦添 → 豐崎 → 國際通(宿)",color:"#D85A30",stops:[
 {t:"09:30",n:"浦添大公園",d:"從北谷出發約15-20分,無時程壓力。滾輪長滑梯偶有維修封閉,出發前查官網;<span class=warn>雨備選項:Round 1 Stadium宜野灣(平日10:00-翌6:00),從浦添約10分,這天雨備有效</span>。滑梯燙限早上、帶墊板",lat:26.25010,lng:127.72869},
 {t:"11:00",n:"Round 1 Stadium宜野灣【若前兩天雨備未用則排這裡】",d:"<span class=warn>你指定放下午,但14:00-16:40(DMM水族館→OTS還車)之間沒有空檔,硬塞會撞。實際可行的插入點是這裡(浦添之後、iias豐崎午餐之前,約10:45-11:45這個時段),或者放棄本日行程改成純Round1半天。若你堅持下午,只能犧牲DMM水族館的完整遊覽時間,自行取捨</span>。平日10:00-翌6:00,部分項目身高限制現場分流",lat:26.27580,lng:127.73104},
 {t:"12:00",n:"iias豐崎 午餐+DMM水族館",d:"DMM 14:00進館,門票先網購",lat:26.15639,lng:127.65068},
 {t:"16:40",n:"OTS臨空豐崎 17:00還車",d:"對面加油站加滿再還。<span class=warn>最終還車18:30</span>。Jumbo taxi前一天預約",lat:26.15883,lng:127.65440},
-{t:"18:00",n:"國際通 晚餐夜逛(宿)",d:"民謠居酒屋/屋台村。飯店判準:近縣廳前站+退房後寄行李",lat:26.21515,lng:127.68475}]},
+{t:"18:00",n:"國際通 晚餐夜逛(宿)",d:"民謠居酒屋/屋台村。飯店判準:近縣廳前站+退房後寄行李<br><b>住宿兩選項:</b><br>① <a href='https://www.daiwaroynet.jp/naha-kokusaidori/' target='_blank' style='color:#8ab4f8'>ダイワロイネットホテル那覇国際通り</a> — ゆいレール牧志駅直結,2025年2月整修開幕,評分4.2(2045則)。<span class=warn>官網有2025/12/31公告提及疑似不正存取(駭客入侵)個資外洩可能性及釣魚網站警示,訂房前建議自行到官網確認最新公告狀態</span>。停車另計、先着順、2026/2/1起調整過收費標準,實際金額需另查<br>② <a href='https://hewitt-resort.com/naha/' target='_blank' style='color:#8ab4f8'>ヒューイットリゾート那覇</a> — 安里駅徒歩3分,評分4.1(1956則),頂樓無邊際泳池。<span class=warn>官網明載停車場84台、先着順不接受預約,住客¥1,800/晚(含稅,前payment)</span><br><b>雨備(那覇市區):</b><a href='https://www.nami-kids.com/' target='_blank' style='color:#8ab4f8'>波の上わくわくキッズランド</a>(辻3-2-1,全天候室內遊樂場)或<a href='https://thekids.co.jp/shop/okinawa-palette-kumoji/' target='_blank' style='color:#8ab4f8'>ザキッズ沖縄パレットくもじ店</a>(久茂地1-1-1パレットくもじ7F,近縣廳前站)",lat:26.21515,lng:127.68475}]},
 {label:"Day 5",date:"8/28(五)",title:"回程日",route:"國際通 → 博物館 → 機場",color:"#9aa3ad",stops:[
 {t:"09:30",n:"縣立博物館・美術館",d:"週五9:00–20:00。行李寄飯店,單軌縣廳前⇄おもろまち。兒童體驗室先領整理券",lat:26.22731,lng:127.69385},
 {t:"13:45",n:"那霸機場",d:"JX871 15:50起飛。國際線櫃檯排隊抓30分,保險12:45出發",lat:26.20013,lng:127.64665}]}
